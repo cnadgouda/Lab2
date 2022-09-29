@@ -1,0 +1,35 @@
+#include <Wire.h>
+#include "rgb_lcd.h"
+#include <math.h>
+const int B = 4275;
+const int R0 = 100000;
+const int pinTemSensor = A1;
+
+rgb_lcd lcd;
+
+const int colorR = 191;
+const int colorG = 61;
+const int colorB = 191;
+
+void setup () 
+{
+lcd.begin(16,2);
+lcd.setRGB (colorR, colorG, colorB);
+lcd.print("Hellow HF766-GEEKS");
+delay(2000);
+}
+void loop() {
+int analogValue = analogRead(pinTemSensor);
+float R = 1023.0 / analogValue-1.0;
+R = R0 * R;
+float temperature = ((1.0 / (log(R/R0)/B+1/298.15)-273.15)*1.8)+32;
+
+lcd.clear();
+lcd.setCursor(0,0);
+lcd.print("Temperature F: ");
+lcd.setCursor(0,1);
+lcd.print(temperature);
+delay(500);
+
+}
+
